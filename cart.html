@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Корзина</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Корзина</h2>
+
+<div id="cart"></div>
+
+<div class="controls">
+  <button onclick="clearCart()">Очистить корзину</button>
+  <button onclick="goToOrder()">Оформить заказ</button>
+</div>
+
+<button onclick="goHome()">← Назад</button>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">✖</span>
+    <p id="modal-text"></p>
+  </div>
+</div>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const container = document.getElementById("cart");
+
+let total = 0;
+
+if (cart.length === 0) {
+  container.innerHTML = "<p>🛒 Корзина пуста</p>";
+} else {
+  cart.forEach((item, index) => {
+    total += Number(item.price) * (item.qty || 1);  
+
+    container.innerHTML += `
+      <div class="card">
+        <img src="${item.img}">
+        <h3>${item.name}</h3>
+        <p>Размер: ${item.size || "—"}</p>
+        <div>
+          <button onclick="changeQty(${index}, -1)">−</button>
+          ${item.qty || 1}
+          <button onclick="changeQty(${index}, 1)">+</button>
+        </div>
+        <p>${item.price} ₸ × ${item.qty || 1}</p>
+        <p><b>${item.price * (item.qty || 1)} ₸</b></p>
+
+        <button class="delete-btn" onclick="removeItem(${index})">
+          Удалить
+        </button>
+      </div>
+    `;
+  });
+
+  container.innerHTML += `<h3>Итого: ${total} ₸</h3>`;
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  location.reload();
+}
+
+function clearCart() {
+  localStorage.removeItem("cart");
+  location.reload();
+}
+
+function goToOrder() {
+  if (cart.length === 0) {
+    showNotify("Пожалуйста добавьте товар в корзину");
+    return;
+  }
+  window.location.href = "order.html";
+}
+
+function goHome() {
+  window.location.href = "index.html";
+}
+
+function changeQty(index, delta) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  cart[index].qty = (cart[index].qty || 1) + delta;
+
+  if (cart[index].qty <= 0) {
+    cart.splice(index, 1);
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  location.reload();
+}
+
+let notifyTimeout;
+
+function showNotify(text) {
+  const notify = document.getElementById("notify");
+
+  document.getElementById("notify-text").innerText = text;
+
+  notify.classList.add("show");
+
+  clearTimeout(notifyTimeout);
+
+  notifyTimeout = setTimeout(() => {
+    closeNotify();
+  }, 2500);
+}
+
+function closeNotify() {
+  document.getElementById("notify").classList.remove("show");
+}
+</script>
+<div id="notify" class="notify">
+    <p id="notify-text"></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Товар</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<button onclick="goBack()">← Назад</button>
+
+<h2 id="title"></h2>
+<img id="mainImage" width="250">
+
+<div id="sizeImages"></div>
+<div id="sizes"></div>
+<div id="sizeTable"></div>
+
+<input type="number" id="qty" value="1" min="1" style="width:60px;">
+<br><br>
+<button onclick="addToCart()">В корзину</button>
+
+<script>
+
+const products = JSON.parse(localStorage.getItem("allProducts"));
+const id = localStorage.getItem("productId");
+const product = products.find(p => p.id == id);
+
+if (!product) {
+  document.body.innerHTML = "Ошибка: товар не найден";
+}
+
+document.getElementById("title").innerText = product.name;
+document.getElementById("mainImage").src = product.img;
+
+let selectedSize = null;
+const sizesDiv = document.getElementById("sizes");
+
+if (product.sizes) {
+  product.sizes.forEach(size => {
+    const btn = document.createElement("button");
+    btn.innerText = size;
+
+    btn.onclick = () => {
+      selectedSize = size;
+
+      document.querySelectorAll("#sizes button")
+        .forEach(b => b.style.background = "#20B2AA");
+
+      btn.style.background = "black";
+    };
+
+    sizesDiv.appendChild(btn);
+  });
+}
+
+// картинки размеров
+const sizeImages = {
+  S: "images/S.jpeg",
+  M: "images/M.jpeg",
+  L: "images/L.jpeg",
+  XL: "images/XL.jpeg"
+};
+
+const imgDiv = document.getElementById("sizeImages");
+
+if (product.category === "shirt") {
+  Object.keys(sizeImages).forEach(size => {
+    const img = document.createElement("img");
+    img.src = sizeImages[size];
+    img.style.width = "50px";
+    img.style.margin = "5px";
+
+    img.onclick = () => {
+      document.getElementById("mainImage").src = sizeImages[size];
+    };
+
+    imgDiv.appendChild(img);
+  });
+}
+
+const sizeTableDiv = document.getElementById("sizeTable");
+
+// показываем таблицу ТОЛЬКО для костюмов
+if (product.category === "suit") {
+  const title = document.createElement("p");
+  title.innerText = "Таблица размеров";
+  title.style.marginTop = "15px";
+
+  const img = document.createElement("img");
+  img.src = "images/razmer.jpeg";
+  img.style.width = "100%";
+  img.style.maxWidth = "400px";
+  img.style.marginTop = "10px";
+  img.style.borderRadius = "10px";
+
+  sizeTableDiv.appendChild(title);
+  sizeTableDiv.appendChild(img);
+}
+
+function addToCart() {
+  if (product.sizes && !selectedSize) {
+    showNotify("Пожалуйста, выберите размер!");
+    return;
+  }
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const qty = Number(document.getElementById("qty").value) || 1;
+
+  // 🔍 ищем такой же товар (тот же размер)
+  let existing = cart.find(item =>
+    item.name === product.name &&
+    item.size === selectedSize
+  );
+
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    cart.push({
+      name: product.name,
+      size: selectedSize,
+      price: product.price,
+      img: product.img,
+      qty: qty
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  showNotify("Товар добавлен в корзину!");
+}
+
+function goBack() {
+  window.location.href = "index.html";
+}
+
+let notifyTimeout;
+
+function showNotify(text) {
+  const notify = document.getElementById("notify");
+
+  document.getElementById("notify-text").innerText = text;
+
+  notify.classList.add("show");
+
+  clearTimeout(notifyTimeout);
+
+  notifyTimeout = setTimeout(() => {
+    closeNotify();
+  }, 2500);
+}
+
+function closeNotify() {
+  document.getElementById("notify").classList.remove("show");
+} 
+console.log(product.category);
+</script>
+<div id="notify" class="notify">
+    <p id="notify-text"></p>
+    <button onclick="closeNotify()">Закрыть</button>
+</div>
+</body>
+</html>

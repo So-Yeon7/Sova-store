@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Оформление заказа</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Оформление заказа</h2>
+
+<div id="orderList"></div>
+<h3 id="total"></h3>
+
+<hr>
+
+<input id="name" placeholder="Ваше имя"><br><br>
+<input id="phone" placeholder="Номер телефона"><br><br>
+<textarea id="comment" placeholder="Комментарий (необязательно)"></textarea><br><br>
+
+<button onclick="sendOrder()">Подтвердить заказ</button>
+<button onclick="goBack()">← Назад</button>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let container = document.getElementById("orderList");
+let total = 0;
+
+if (cart.length === 0) {
+  container.innerHTML = "<p>🛒 Корзина пуста</p>";
+} else {
+  cart.forEach(item => {
+    container.innerHTML += `
+      <div>
+        <p><b>${item.name}</b></p>
+        <p>Размер: ${item.size || "-"}</p>
+        <p>${item.price} ₸</p>
+        <hr>
+      </div>
+    `;
+    total += Number(item.price) * (item.qty || 1);
+  });
+}
+
+document.getElementById("total").innerText = "Итого: " + total + " ₸";
+
+function sendOrder() {
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let comment = document.getElementById("comment").value;
+
+  if (!name || !phone) {
+    showNotify("Заполните имя и телефон");
+    return;
+  }
+
+  if (cart.length === 0) {
+    showNotify("Корзина пуста");
+    return;
+  }
+
+  let text = `Здравствуйте! Хочу заказать:%0A`;
+  text += `Имя: ${name}%0A`;
+  text += `Телефон: ${phone}%0A%0A`;
+
+  cart.forEach(item => {
+    text += `• ${item.name} (${item.size || "-"}) x${item.qty || 1} - ${item.price * (item.qty || 1)} ₸%0A`;
+  });
+
+  text += `%0AИтого: ${total} ₸%0A`;
+
+  if (comment) {
+    text += `Комментарий: ${comment}%0A`;
+  }
+
+  window.open(`https://wa.me/77476975946?text=${text}`);
+
+  // очищаем корзину ТОЛЬКО после отправки
+  localStorage.removeItem("cart");
+
+  // возвращаем на главную
+  window.location.href = "index.html";
+}
+
+function goBack() {
+  window.location.href = "cart.html";
+}
+function showNotify(text) {
+  document.getElementById("notify-text").innerText = text;
+  document.getElementById("notify").style.display = "block";
+}
+
+function closeNotify() {
+  document.getElementById("notify").style.display = "none";
+}
+let notifyTimeout;
+
+function showNotify(text) {
+  const notify = document.getElementById("notify");
+
+  document.getElementById("notify-text").innerText = text;
+
+  notify.classList.add("show");
+
+  clearTimeout(notifyTimeout);
+
+  notifyTimeout = setTimeout(() => {
+    closeNotify();
+  }, 2500);
+}
+
+function closeNotify() {
+  document.getElementById("notify").classList.remove("show");
+}
+</script>
+<div id="notify" class="notify">
+    <p id="notify-text"></p>
+    <button onclick="closeNotify()">Закрыть</button>
+</div>
+</body>
+</html>
