@@ -1,11 +1,12 @@
 body {
-  background-image: url('./images/obou.jpg');
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
   text-align: center;
   color: #00e0ff;
   text-shadow: 0 0 5px #00e0ff;
+
+  background: url("images/obou.jpg") no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -38,10 +39,18 @@ button, select {
 
 /* КАРТОЧКИ */
 .products {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 колонки */
+  gap: 15px;
+  padding: 10px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 15px;
+  padding: 10px;
+}
+.product img {
+  width: 100%;
+  border-radius: 15px;
+}
 }
 
 .card {
