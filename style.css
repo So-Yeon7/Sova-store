@@ -1,10 +1,12 @@
 body {
-  background-image: url('./images/obou.jpg');
   margin: 0;
-  font-family: Arial;
+  padding: 0;
+  background-image: url('./images/obou.jpg') no-repeat center center fixed;
+  font-family: Arial, sans-serif;
   text-align: center;
   color: #00e0ff;
   text-shadow: 0 0 5px #00e0ff;
+  background-size: cover;
 }
 
 /* ЛОГО */
@@ -19,6 +21,8 @@ body {
 }
 
 button, select {
+  width: 80%;
+  max-width: 300px;
   background: #3aa6c9;
   padding: 10px 20px;
   margin: 5px;
@@ -145,7 +149,30 @@ button, select {
   transform: translate(-50%, -50%) scale(1);
   pointer-events: auto;
 }
-
 .notify button {
   margin-top: 10px;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  h2 {
+    font-size: 20px;
+  }
+
+  img {
+    max-width: 90%;
+    height: auto;
+  }
+
+  button {
+    width: 90%;
+    font-size: 15px;
+  }
 }
