@@ -373,7 +373,7 @@ function render(list) {
 
   list.forEach(p => {
     container.innerHTML += `
-      <div class="card" onclick="openProduct(${p.id})">
+      <div class="product" onclick="openProduct(${p.id})">
         <img src="${p.img}">
         <h3>${p.name}</h3>
         <div class="price">${p.price} ₸</div>
@@ -385,7 +385,9 @@ function render(list) {
 function applyFilters() {
   const filter = document.getElementById("filter").value;
   const search = document.getElementById("search").value.toLowerCase();
+
   let result = products;
+
   if (filter !== "all") {
     result = result.filter(p => p.category === filter);
   }
@@ -395,15 +397,14 @@ function applyFilters() {
       p.name.toLowerCase().includes(search)
     );
   }
+
   render(result);
 }
-
-
 
 function resetFilter() {
   document.getElementById("filter").value = "all";
   document.getElementById("search").value = "";
-  document.getElementById("products").innerHTML = ""; // ✅ пусто
+  render(products);
 }
 
 function showAll() {
