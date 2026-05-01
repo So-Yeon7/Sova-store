@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="ru">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sova Shop</title>
 <link rel="stylesheet" href="style.css">
@@ -9,13 +10,12 @@
 <body>
 
 <div class="logo">
-  <img src="images/logo1.jpeg">
+  <img src="./images/logo1.jpeg">
 </div>
 
 <div class="controls">
 
-<input type="text" id="search" placeholder="Поиск">
-<button onclick="applyFilters()">Найти</button>
+<button onclick="applyFilters()">Поиск</button>
 
 <select id="filter">
   <option value="all">Все товары</option>
@@ -26,7 +26,7 @@
   <option value="slates">Сланцы</option>
 </select>
 
-<button onclick="resetFilter()">Сбросить</button>
+<button onclick="resetFilter()">Сбросить фильтр</button>
 <button onclick="showAll()">Все товары</button>
 <button onclick="openCart()">Корзина</button>
 <button onclick="openContacts()">Связаться</button>
@@ -44,15 +44,6 @@
   </div>
 </div>
 
-<footer>
-<p>© SOVA, 2026</p>
-</footer>
-
 <script src="script.js"></script>
-
-<script>
-render(products); // сразу показываем товары
-</script>
-
 </body>
 </html>
