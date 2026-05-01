@@ -365,7 +365,7 @@ const products = [
   },
 ]
 
-localStorage.setItem("allProducts", JSON.stringify(products));
+const products = JSON.parse(localStorage.getItem("allProducts")) || [];
 
 function render(list) {
   const container = document.getElementById("products");
@@ -373,7 +373,7 @@ function render(list) {
 
   list.forEach(p => {
     container.innerHTML += `
-      <div class="product" onclick="openProduct(${p.id})">
+      <div class="card" onclick="openProduct(${p.id})">
         <img src="${p.img}">
         <h3>${p.name}</h3>
         <div class="price">${p.price} ₸</div>
@@ -384,7 +384,6 @@ function render(list) {
 
 function applyFilters() {
   const filter = document.getElementById("filter").value;
-  const search = document.getElementById("search").value.toLowerCase();
 
   let result = products;
 
@@ -392,19 +391,12 @@ function applyFilters() {
     result = result.filter(p => p.category === filter);
   }
 
-  if (search) {
-    result = result.filter(p =>
-      p.name.toLowerCase().includes(search)
-    );
-  }
-
   render(result);
 }
 
 function resetFilter() {
   document.getElementById("filter").value = "all";
-  document.getElementById("search").value = "";
-  render(products);
+  document.getElementById("products").innerHTML = "";
 }
 
 function showAll() {
@@ -429,9 +421,9 @@ function closeModal() {
 }
 
 function goWhatsApp() {
-  window.open("https://wa.me/77476975946", "_blank");
+  window.open("https://wa.me/77476975946");
 }
 
 function goTelegram() {
-  window.open("https://t.me/websitecreation_div", "_blank");
+  window.open("https://t.me/websitecreation_div");
 }
