@@ -86,3 +86,72 @@ button, select {
   float: right;
   cursor: pointer;
 }
+.product-page {
+    width: 100%;
+    max-width: 430px;
+    margin: auto;
+    padding: 15px;
+    text-align: center;
+}
+
+.product-page img.main-product-image {
+    width: 90%;
+    max-width: 360px;
+    border-radius: 12px;
+}
+
+.size-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: none;
+    background: #5ad9ff;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.size-btn.active {
+    background: white;
+}
+
+.notification {
+    position: fixed;
+    left: 50%;
+    bottom: 100px;
+    transform: translateX(-50%);
+    
+    background: rgba(0,0,0,0.8);
+    
+    color: white;
+    
+    padding: 18px 25px;
+    
+    border-radius: 18px;
+    
+    font-size: 18px;
+    
+    z-index: 9999;
+    
+    animation: fadeIn 0.3s;
+}
+.size-images {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.size-images img {
+    width: 55px;
+    height: 70px;
+    border-radius: 8px;
+}
+
+.size-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
