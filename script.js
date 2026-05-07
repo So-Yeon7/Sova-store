@@ -427,4 +427,22 @@ function goWhatsApp() {
 function goTelegram() {
   window.open("https://t.me/websitecreation_div");
 }
-showAll();
+
+function showNotification(text) {
+
+    const old = document.querySelector(".notification");
+
+    if(old) old.remove();
+
+    const div = document.createElement("div");
+
+    div.className = "notification";
+
+    div.innerText = text;
+
+    document.body.appendChild(div);
+
+    setTimeout(() => {
+        div.remove();
+    }, 2000);
+}
