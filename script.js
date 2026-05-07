@@ -365,7 +365,7 @@ const products = [
   },
 ]
 
-const products = JSON.parse(localStorage.getItem("allProducts")) || [];
+localStorage.setItem("allProducts", JSON.stringify(products));
 
 function render(list) {
   const container = document.getElementById("products");
@@ -427,3 +427,4 @@ function goWhatsApp() {
 function goTelegram() {
   window.open("https://t.me/websitecreation_div");
 }
+showAll();
