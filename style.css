@@ -101,20 +101,22 @@ button, select {
 }
 
 .size-btn {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
+    width: 48px;
+    height: 38px;
+    border-radius: 12px;
     border: none;
     background: #5ad9ff;
     color: black;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 .size-btn.active {
     background: white;
+    color: black;
 }
-
 .notification {
     position: fixed;
     left: 50%;
